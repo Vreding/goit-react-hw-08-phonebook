@@ -1,23 +1,23 @@
 import styled from '@emotion/styled';
 import { Field as FormikField, Form as FormikForm } from 'formik';
-import { MdAdd } from "react-icons/md";
+import { MdAdd } from 'react-icons/md';
 
 export const Form = styled(FormikForm)`
-  display: flex; 
+  display: flex;
   flex-direction: column;
-  gap: 16px;  
-  padding: 8px;  
+  gap: 16px;
+  padding: 8px;
   border: 1px solid black;
   border-radius: 4px;
-  background-color: white;  
+  background-color: white;
   font-size: 20px;
   font-family: 'Roboto', sans-serif;
-  font-weight: bold;  
+  font-weight: bold;
 `;
 
 export const Field = styled(FormikField)`
   padding: 4px 12px;
-  width: 250px;  
+  width: 250px;
   border: 1px solid black;
   border-radius: 12px;
   transition: box-shadow 250ms linear;
@@ -28,16 +28,15 @@ export const Field = styled(FormikField)`
 
   &:hover,
   &:focus {
-    outline: none;    
-    box-shadow: 0 5px 5px rgba(0, 0, 0, 0.25),
-                0 5px 5px rgba(0, 0, 0, 0.25);    
-  };
+    outline: none;
+    box-shadow: 0 5px 5px rgba(0, 0, 0, 0.25), 0 5px 5px rgba(0, 0, 0, 0.25);
+  }
 `;
 
 export const Label = styled.label`
   display: flex;
   align-items: center;
-  justify-content: space-between;  
+  justify-content: space-between;
 `;
 
 export const Button = styled.button`
@@ -46,19 +45,17 @@ export const Button = styled.button`
   justify-content: center;
   gap: 8px;
   margin-left: auto;
-  padding: 4px;  
+  padding: 4px;
   background-color: white;
   border: none;
-  outline: none;  
+  outline: none;
   font-size: 16px;
-  font-weight: normal;  
-  cursor: pointer; 
-  
-  
-  &:hover > svg{
-    box-shadow: 0 5px 5px rgba(0, 0, 0, 0.25),
-                0 5px 5px rgba(0, 0, 0, 0.25);
-  };
+  font-weight: normal;
+  cursor: pointer;
+
+  &:hover > svg {
+    box-shadow: 0 5px 5px rgba(0, 0, 0, 0.25), 0 5px 5px rgba(0, 0, 0, 0.25);
+  }
 
   &:active > svg {
     background-color: rgb(181, 245, 254);
@@ -74,4 +71,13 @@ export const Icon = styled(MdAdd)`
   width: 16px;
   height: 16px;
   transition: box-shadow 250ms linear;
+`;
+
+export const Error = styled.div`
+  color: red;
+  font-size: 12px;
+  margin-top: 4px;
+  position: absolute;
+  bottom: -16px;
+  right: 0;
 `;
