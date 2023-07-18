@@ -1,11 +1,16 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { addContact, fetchContacts, deleteContact, updateContact } from './operations';
+import {
+  addContact,
+  fetchContacts,
+  deleteContact,
+  updateContact,
+} from './operations';
 
-const handlePending = function(state) {
+const handlePending = function (state) {
   return {
     ...state,
     isLoading: true,
-  };  
+  };
 };
 
 const handleRejected = function (state, action) {
@@ -26,18 +31,18 @@ const contactsSlice = createSlice({
 
   extraReducers: {
     [fetchContacts.pending]: handlePending,
-    [fetchContacts.fulfilled](state, action) {      
+    [fetchContacts.fulfilled](state, action) {
       return {
         ...state,
         isLoading: false,
         error: null,
-        items: action.payload.sort((a, b) => a.name.localeCompare(b.name)),
+        items: [...action.payload].sort((a, b) => a.name.localeCompare(b.name)),
       };
     },
     [fetchContacts.rejected]: handleRejected,
 
     [addContact.pending]: handlePending,
-    [addContact.fulfilled](state, action) {      
+    [addContact.fulfilled](state, action) {
       return {
         ...state,
         isLoading: false,
@@ -54,7 +59,7 @@ const contactsSlice = createSlice({
         isLoading: false,
         error: null,
         items: state.items.filter(item => item.id !== action.payload.id),
-      };      
+      };
     },
     [deleteContact.rejected]: handleRejected,
 
@@ -68,10 +73,10 @@ const contactsSlice = createSlice({
         ...state,
         isLoading: false,
         error: null,
-        items: state.items.map(item => 
+        items: state.items.map(item =>
           item.id === id ? { id, name, number } : item
-        )
-      }
+        ),
+      };
     },
     [updateContact.rejected]: handleRejected,
   },

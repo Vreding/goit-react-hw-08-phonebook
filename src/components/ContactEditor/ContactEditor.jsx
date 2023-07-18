@@ -1,12 +1,15 @@
-import PropTypes from "prop-types";
+import PropTypes from 'prop-types';
 import { Formik } from 'formik';
-import { useDispatch } from "react-redux";
-import { useSelector } from "react-redux";
+import { useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { Notify } from 'notiflix/build/notiflix-notify-aio';
 import { firstLetterCaps } from 'utilities';
-import { selectContacts, selectVisibleContacts } from "redux/contacts/selectors";
-import { updateContact } from "redux/contacts/operations";
-import { updateFilter } from "redux/filter/filterSlice";
+import {
+  selectContacts,
+  selectVisibleContacts,
+} from 'redux/contacts/selectors';
+import { updateContact } from 'redux/contacts/operations';
+import { updateFilter } from 'redux/filter/filterSlice';
 import { Button, Field, Form, Icon, Label } from './ContactEditor.styled';
 
 const ContactEditor = ({ index }) => {
@@ -15,11 +18,12 @@ const ContactEditor = ({ index }) => {
   /////////////
   const visibleContacts = useSelector(selectVisibleContacts);
   /////////////
-  const currentContact = visibleContacts[index]; 
-  
+  const currentContact = visibleContacts[index];
+
   const handleSubmit = ({ name, number }, { resetForm }) => {
     const isDuplicateName = contacts.find(contact => {
-      if (currentContact.name.toLowerCase() === name.toLowerCase()) return false;
+      if (currentContact.name.toLowerCase() === name.toLowerCase())
+        return false;
       return contact.name.toLowerCase() === name.toLowerCase();
     });
 
@@ -27,19 +31,31 @@ const ContactEditor = ({ index }) => {
       if (currentContact.number === number) return false;
       return contact.number === number;
     });
-        
-    if (isDuplicateNumber || isDuplicateName) {     
-      <>
-        { isDuplicateName && Notify.failure(`${firstLetterCaps(name)} is already in contacts`) };      
-        { isDuplicateNumber && Notify.failure(`${number} is already in contacts`) }; 
-      </>
-      return;
-    };
 
-    dispatch(updateContact({ name, number, id: currentContact.id }));
-    dispatch(updateFilter(""));
-    Notify.success( `Contact ${firstLetterCaps(currentContact.name)} successfully changed`);    
-    resetForm();
+    if (isDuplicateNumber || isDuplicateName) {
+      <>
+        {isDuplicateName &&
+          Notify.failure(`${firstLetterCaps(name)} is already in contacts`)}
+        ;
+        {isDuplicateNumber &&
+          Notify.failure(`${number} is already in contacts`)}
+        ;
+      </>;
+      return;
+    }
+
+    dispatch(updateContact({ name, number, id: currentContact.id }))
+      .then(() => {
+        Notify.success(
+          `Contact ${firstLetterCaps(currentContact.name)} successfully changed`
+        );
+        dispatch(updateFilter(''));
+        resetForm();
+      })
+      .catch(error => {
+        console.error('Error adding contact:', error);
+        Notify.failure('Failed to edit contact. Please try again later.');
+      });
   };
 
   return (
@@ -49,11 +65,12 @@ const ContactEditor = ({ index }) => {
         number: currentContact.number,
       }}
       onSubmit={handleSubmit}
-    >      
+    >
       <Form>
         <Label>
           Edit name
-          <Field id="name"
+          <Field
+            id="name"
             type="text"
             name="name"
             pattern="^[a-zA-Zа-яА-Я]+(([' -][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$"
@@ -72,12 +89,12 @@ const ContactEditor = ({ index }) => {
             title="Phone number must be digits and can contain spaces, dashes, parentheses and can start with +"
             required
           />
-        </Label>        
-        <Button type="submit" >
+        </Label>
+        <Button type="submit">
           Change contact
           <Icon />
-        </Button>        
-      </Form>      
+        </Button>
+      </Form>
     </Formik>
   );
 };

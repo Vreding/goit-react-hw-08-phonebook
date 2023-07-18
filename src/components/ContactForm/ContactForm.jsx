@@ -39,11 +39,17 @@ const ContactForm = () => {
       return;
     }
 
-    dispatch(addContact({ name, number }));
-    Notify.success(
-      `${firstLetterCaps(name)} successfully added to contact list`
-    );
-    resetForm();
+    dispatch(addContact({ name, number }))
+      .then(() => {
+        Notify.success(
+          `${firstLetterCaps(name)} successfully added to contact list`
+        );
+        resetForm();
+      })
+      .catch(error => {
+        console.error('Error adding contact:', error);
+        Notify.failure('Failed to add contact. Please try again later.');
+      });
   };
 
   const validationSchema = Yup.object().shape({
